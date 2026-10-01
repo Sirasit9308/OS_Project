@@ -4,11 +4,11 @@
 int main(int argc, char* argv[]){
 
     if(argc < 2){
-        std::cout << "ใส่ข้อมูลไม่ครบ";
+        std::cout << "Data invalid.";
         return 1;
     }
     else if(argc > 2){
-        std::cout << "ใส่ข้อมูลเกิน";
+        std::cout << "Data invalid.";
         return 1;
     }
     else if(argc == 2){
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]){
         std::string client_command;
         while(std::cout << "Client-" << client_id << ": " && std::cin >> client_command){
             if(client_command == "QUIT"){
-                std::cout << "Exiting...";
+                std::cout << "Exiting...\n";
                 break;
             }
             if(client_command != "LIST" && client_command != "STATUS" && 
@@ -43,7 +43,7 @@ int main(int argc, char* argv[]){
                 perror("mq_send error.");
             }
             else{
-                std::cout << "Request send:" << request.command << "\n"; 
+                std::cout << "Request send: " << request.command << "\n"; 
             }
         }
         mq_close(message_queue);

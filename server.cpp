@@ -27,7 +27,7 @@ void init_resources() {
 // ฟังก์ชันสำหรับสร้าง Random Delay (50 - 500 มิลลิวินาที)
 void random_delay() {
     int delay_ms = (rand() % 451) + 50; // สุ่มค่าระหว่าง 50 ถึง 500 ms
-    usleep(delay_ms * 1000);            // แปลงเป็นไมโครวินาที
+    usleep(delay_ms * 100000);            // แปลงเป็นไมโครวินาที
 }
 
 // 2. ฟังก์ชันการทำงานของ Worker Thread
@@ -37,7 +37,7 @@ void worker_task(int worker_id, mqd_t mqdes) {
         // ดึง Request จาก POSIX Message Queue
         ssize_t bytes_read = mq_receive(mqdes, (char*)&req, sizeof(req), nullptr);
         if (bytes_read == -1) {
-            perror("mq_receive error");
+            perror("mq_receive error.");
             break;
         }
 
@@ -45,12 +45,8 @@ void worker_task(int worker_id, mqd_t mqdes) {
         std::cout << "[Worker-" << worker_id << "] received command " << cmd 
                   << " for Seat " << req.seat_id << " from Client-" << req.client_id << "\n";
 
-        // =========================================================================
-        // 📌 จุดสลับการทดลอง (Experiment 2 vs Experiment 3):
-        // - Experiment 2 (ไม่มี Synchronization): ให้คง comment บรรทัด lock นี้ไว้
-        // - Experiment 3 (มี Synchronization): ลบ comment ออกเพื่อเปิดใช้งาน Mutex
-        // =========================================================================
-        // std::lock_guard<std::mutex> lock(mtx);
+        //Mutex
+        std::lock_guard<std::mutex> lock(mtx);
 
         std::cout << "[Worker-" << worker_id << "] entering critical section\n";
 
@@ -79,7 +75,7 @@ void worker_task(int worker_id, mqd_t mqdes) {
                 std::cout << "[Worker-" << worker_id << "] Invalid Seat ID: " << req.seat_id << "\n";
             }
         } 
-        else if (cmd == "RESERVE") {
+        else if (cmd == "RESERVE") {t
             int idx = req.seat_id - 1;
             if (idx >= 0 && idx < NUM_RESOURCES) {
                 // 1. ตรวจสอบสถานะทรัพยากร (Check)
