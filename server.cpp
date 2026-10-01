@@ -25,7 +25,7 @@ void init_resources() {
 
 // ฟังก์ชันสำหรับสร้าง Random Delay (50 - 500 มิลลิวินาที) ตามข้อกำหนดโครงงาน
 void random_delay() {
-    int delay_ms = (rand() % 4510) + 50; // สุ่มค่าระหว่าง 50 ถึง 500 ms
+    int delay_ms = (rand() % 2001) + 1000; // สุ่มค่าระหว่าง 50 ถึง 500 ms
     usleep(delay_ms * 1000);             // แปลงเป็นไมโครวินาที
 }
 
