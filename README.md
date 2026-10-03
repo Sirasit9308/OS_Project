@@ -3,14 +3,14 @@ A concurrent resource reservation system (e.g., movie theater seats, flight seat
 
 ---
 
-## 📌 Project Overview
+##  Project Overview
 - **Scenario:** Resource Reservation System (20 resources, numbered 1–20).
 - **Architecture:** Client-Server Architecture via POSIX Message Queue (`/reservation_mq`).
 - **Concurrency Model:** Multi-worker server handling concurrent requests with synchronization control.
 
 ---
 
-## 🚀 Getting Started & Docker Environment
+## Getting Started & Docker Environment
 
 ### 1. Build Docker Image
 Open your terminal inside the project directory and build the Docker image:
@@ -26,7 +26,7 @@ docker run -it --name os-server-client os-project
 
 ---
 
-## 🖥️ How to Run the Server & Clients
+## How to Run the Server & Clients
 
 ### Running the Server (Terminal 1)
 Inside the container, compile and run the server:
@@ -51,7 +51,7 @@ Run the client with a specific Client ID (e.g., Client 1):
 
 ---
 
-## 📋 Client Commands Guide
+## Client Commands Guide
 
 Once running a client (`./client <client_id>`), you can use the following commands:
 
