@@ -23,9 +23,9 @@ void init_resources() {
     }
 }
 
-// ฟังก์ชันสำหรับสร้าง Random Delay (50 - 500 มิลลิวินาที) ตามข้อกำหนดโครงงาน
+// ฟังก์ชันสำหรับสร้าง Random Delay (1000 - 3000 มิลลิวินาที) ตามข้อกำหนดโครงงาน
 void random_delay() {
-    int delay_ms = (rand() % 2001) + 1000; // สุ่มค่าระหว่าง 50 ถึง 500 ms
+    int delay_ms = (rand() % 2001) + 1000; // สุ่มค่าระหว่าง 1000 ถึง 3000 ms
     usleep(delay_ms * 1000);             // แปลงเป็นไมโครวินาที
 }
 
@@ -47,7 +47,7 @@ void worker_task(int worker_id, int msqid) {
         // - Experiment 2 (ไม่มี Synchronization): ให้คง comment บรรทัด lock นี้ไว้
         // - Experiment 3 (มี Synchronization): ให้ลบเครื่องหมาย // ออกเพื่อเปิดใช้งาน Mutex
         // =========================================================================
-        // std::lock_guard<std::mutex> lock(mtx); 
+        //std::lock_guard<std::mutex> lock(mtx); 
 
         std::cout << "[Worker-" << worker_id << "] entering critical section\n";
 
