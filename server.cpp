@@ -47,7 +47,7 @@ void worker_task(int worker_id, int msqid) {
         // - Experiment 2 (ไม่มี Synchronization): ให้คง comment บรรทัด lock นี้ไว้
         // - Experiment 3 (มี Synchronization): ให้ลบเครื่องหมาย // ออกเพื่อเปิดใช้งาน Mutex
         // =========================================================================
-        //std::lock_guard<std::mutex> lock(mtx); 
+        std::lock_guard<std::mutex> lock(mtx); 
 
         std::cout << "[Worker-" << worker_id << "] entering critical section\n";
 
