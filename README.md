@@ -4,7 +4,7 @@ A concurrent resource reservation system (e.g., movie theater seats, flight seat
 ---
 
 ##  Project Overview
-- **Scenario:** Resource Reservation System (20 resources, numbered 1–20).
+- **Scenario:** Resource Reservation System (50 resources, numbered 1–50).
 - **Architecture:** Client-Server Architecture via POSIX Message Queue (`/reservation_mq`).
 - **Concurrency Model:** Multi-worker server handling concurrent requests with synchronization control.
 
@@ -62,3 +62,11 @@ Once running a client (`./client <client_id>`), you can use the following comman
 | **RESERVE** | `RESERVE <resource_id>` | Request to reserve a specific resource. | `RESERVE 10` |
 | **CANCEL** | `CANCEL <resource_id>` | Cancel your reservation for a resource. | `CANCEL 10` |
 | **QUIT** | `QUIT` | Exit the client program. | `QUIT` |
+
+## Synchronization Control
+
+Synchronization can be enabled or disabled by uncommenting or commenting out the mutex lines (`mtx.lock();` / `mtx.unlock();`) inside the `worker_task` function in `server.cpp`[cite: 2].
+After modifying the code, recompile and run the server using the following commands[cite: 1, 2]:
+```bash
+g++ -std=c++11 server.cpp -o server -lrt -lpthread
+./server
