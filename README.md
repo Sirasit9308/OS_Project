@@ -62,3 +62,12 @@ Once running a client (`./client <client_id>`), you can use the following comman
 | **RESERVE** | `RESERVE <resource_id>` | Request to reserve a specific resource. | `RESERVE 10` |
 | **CANCEL** | `CANCEL <resource_id>` | Cancel your reservation for a resource. | `CANCEL 10` |
 | **QUIT** | `QUIT` | Exit the client program. | `QUIT` |
+---
+
+## Synchronization Control
+
+การเปิดหรือปิด Synchronization สามารถทำได้โดยการนำเครื่องหมายคอมเมนต์ (`//`) ออก หรือใส่เพิ่มเข้าไปที่คำสั่ง Mutex (`std::lock_guard<std::mutex> lock(mtx);` หรือ `mtx.lock();` / `mtx.unlock();`) ภายในฟังก์ชัน `worker_task` ของไฟล์ `server.cpp`
+หลังจากปรับเปลี่ยนค่าแล้ว ให้คอมไพล์โปรแกรมเซิร์ฟเวอร์ใหม่ด้วยคำสั่ง:
+```bash
+g++ -std=c++11 server.cpp -o server -lrt -lpthread
+./server
