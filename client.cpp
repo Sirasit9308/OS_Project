@@ -2,7 +2,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-// ฟังก์ชันแสดงหน้าต่าง Default Guide / Menu
 void print_menu(int client_id) {
     std::cout << "\n======================================================\n";
     std::cout << "          CLIENT-" << client_id << " RESERVATION SYSTEM\n";
@@ -24,9 +23,8 @@ int main(int argc, char* argv[]) {
 
     int client_id = std::stoi(argv[1]);
 
-    // 1. สร้าง Response Queue สำหรับ Client ตัวนี้โดยเฉพาะ
     std::string resp_queue_name = "/resp_client_" + std::to_string(client_id);
-    mq_unlink(resp_queue_name.c_str()); // ลบคิวเดิมทิ้งก่อน (ถ้ามีค้างอยู่)
+    mq_unlink(resp_queue_name.c_str());
 
     struct mq_attr resp_attr;
     resp_attr.mq_flags = 0;
@@ -40,7 +38,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // 2. เชื่อมต่อไปยัง Server Request Queue
     mqd_t message_queue = mq_open(QUEUE_NAME, O_WRONLY);
     if (message_queue == (mqd_t)-1) {
         perror("mq_open server queue error");
@@ -49,7 +46,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // แสดงหน้าจอ Default Menu ครั้งแรกหลัง Login เข้ามา
     print_menu(client_id);
 
     std::string client_command;
@@ -62,7 +58,8 @@ int main(int argc, char* argv[]) {
         if (client_command != "LIST" && client_command != "STATUS" && 
             client_command != "RESERVE" && client_command != "CANCEL") {
             std::cout << ">> [Error]: We don't have this function.\n";
-            print_menu(client_id); // แสดงเมนูซ้ำเมื่อพิมพ์ผิด
+            //sleep
+            print_menu(client_id);
             continue;
         }
 
@@ -82,11 +79,9 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // ส่ง Request ไปยังเซิร์ฟเวอร์
         if (mq_send(message_queue, (const char*)&request, sizeof(request), 0) == -1) {
             perror("mq_send error.");
         } else {
-            // รอรับ Response ตอบกลับจากเซิร์ฟเวอร์
             struct Request response;
             if (mq_receive(resp_mq, (char*)&response, sizeof(response), nullptr) == -1) {
                 perror("mq_receive response error.");
@@ -96,12 +91,9 @@ int main(int argc, char* argv[]) {
                 std::cout << "------------------------------------------------------\n";
             }
         }
-
-        // แสดงหน้าจอ Menu อีกครั้งหลังทำคำสั่งเสร็จสิ้น
         print_menu(client_id);
     }
 
-    // ปิดและทำลาย Message Queue เมื่อออกจากโปรแกรม
     mq_close(message_queue);
     mq_close(resp_mq);
     mq_unlink(resp_queue_name.c_str());

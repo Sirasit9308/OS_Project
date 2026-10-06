@@ -8,8 +8,8 @@
 #include <pthread.h>
 
 #define QUEUE_NAME "/reservation_mq"
-#define NUM_RESOURCES 50 // ปรับเป็น 50 ที่นั่ง
-#define RESPONSE_SIZE 2048 // ขยายขนาด buffer สำหรับรับข้อความตอบกลับ
+#define NUM_RESOURCES 50 
+#define RESPONSE_SIZE 2048 
 
 struct Request {
     int client_id;  

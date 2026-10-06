@@ -8,3 +8,4 @@ server: server.cpp common.h
 
 clean:
 	rm -f client server
+

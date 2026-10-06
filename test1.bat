@@ -1,0 +1,2 @@
+@echo off
+docker exec -it os-project bash -c "(echo -e 'STATUS 5\nQUIT' | ./client 1) & (echo -e 'RESERVE 5\nQUIT' | ./client 2) & (echo -e 'CANCEL 5\nQUIT' | ./client 3) & (echo -e 'LIST\nQUIT' | ./client 4) & (echo -e 'RESERVE 6\nQUIT' | ./client 5) & wait"

@@ -12,9 +12,8 @@
 #include <cstring>
 #include "common.h"
 
-// ตารางทรัพยากรส่วนกลาง
 Seat reservation_table[NUM_RESOURCES];
-std::mutex mtx; // Mutex สำหรับควบคุม Critical Section
+std::mutex mtx;
 
 void init_resources() {
     for (int i = 0; i < NUM_RESOURCES; ++i) {
@@ -25,7 +24,7 @@ void init_resources() {
 }
 
 void random_delay() {
-    int delay_ms = (rand() % 451) + 50; // สุ่มหน่วงเวลา 50-500 ms
+    int delay_ms = (rand() % 451) + 50;
     usleep(delay_ms * 1000);
 }
 
@@ -42,9 +41,12 @@ void worker_task(int worker_id, mqd_t mqdes) {
         std::cout << "[Worker-" << worker_id << "] received command " << cmd 
                   << " for Seat " << req.seat_id << " from Client-" << req.client_id << "\n";
 
-        // เข้าสู่ Critical Section
         {
-            std::lock_guard<std::mutex> lock(mtx);
+        // ----------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------
+            // std::lock_guard<std::mutex> lock(mtx);
+        // ----------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------
             std::cout << "[Worker-" << worker_id << "] entering critical section\n";
 
             if (cmd == "LIST") {
@@ -91,8 +93,12 @@ void worker_task(int worker_id, mqd_t mqdes) {
                               << ": " << status_str << "\n";
 
                     if (reservation_table[idx].status == AVAILABLE) {
+                    // ----------------------------------------------------------------------------------
+                    // ----------------------------------------------------------------------------------
                         std::cout << "[Worker-" << worker_id << "] -> hitting random delay...\n";
                         random_delay();
+                    // ----------------------------------------------------------------------------------
+                    // ----------------------------------------------------------------------------------
 
                         reservation_table[idx].status = RESERVED;
                         reservation_table[idx].owner_client_id = req.client_id;
@@ -148,7 +154,6 @@ void worker_task(int worker_id, mqd_t mqdes) {
             std::cout << "[Worker-" << worker_id << "] leaving critical section\n\n";
         }
 
-        // ส่งข้อความผลลัพธ์กลับไปยัง Response Queue ของ Client ผู้ส่ง
         std::string client_resp_q_name = "/resp_client_" + std::to_string(req.client_id);
         mqd_t resp_mq = mq_open(client_resp_q_name.c_str(), O_WRONLY);
         if (resp_mq != (mqd_t)-1) {
@@ -178,8 +183,13 @@ int main() {
     init_resources();
     std::cout << "[Server] Started. Shared Reservation Table initialized (" 
               << NUM_RESOURCES << " items).\n";
-
+    // ----------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
     int num_workers = 3;
+    // ----------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------
     std::vector<std::thread> workers;
     for (int i = 1; i <= num_workers; ++i) {
         workers.emplace_back(worker_task, i, mqdes);
