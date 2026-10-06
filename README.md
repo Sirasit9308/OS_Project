@@ -66,8 +66,8 @@ Once running a client (`./client <client_id>`), you can use the following comman
 
 ## Synchronization Control
 
-การเปิดหรือปิด Synchronization สามารถทำได้โดยการนำเครื่องหมายคอมเมนต์ (`//`) ออก หรือใส่เพิ่มเข้าไปที่คำสั่ง Mutex (`mtx.lock();` / `mtx.unlock();`) ภายในฟังก์ชัน `worker_task` ของไฟล์ `server.cpp`
-หลังจากปรับเปลี่ยนค่าแล้ว ให้คอมไพล์โปรแกรมเซิร์ฟเวอร์ใหม่ด้วยคำสั่ง:
+Synchronization can be enabled or disabled by uncommenting or commenting out the mutex lines (`mtx.lock();` / `mtx.unlock();`) inside the `worker_task` function in `server.cpp`[cite: 2].
+After modifying the code, recompile and run the server using the following commands[cite: 1, 2]:
 ```bash
 g++ -std=c++11 server.cpp -o server -lrt -lpthread
 ./server
