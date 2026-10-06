@@ -4,7 +4,7 @@ A concurrent resource reservation system (e.g., movie theater seats, flight seat
 ---
 
 ##  Project Overview
-- **Scenario:** Resource Reservation System (20 resources, numbered 1–20).
+- **Scenario:** Resource Reservation System (50 resources, numbered 1–50).
 - **Architecture:** Client-Server Architecture via POSIX Message Queue (`/reservation_mq`).
 - **Concurrency Model:** Multi-worker server handling concurrent requests with synchronization control.
 
